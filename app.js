@@ -57,26 +57,28 @@ app.get("/register", function(req, res) {
   res.render("register");
 });
 
-app.get("/secrets", function(req, res){
-  if (req.isAuthenticated()){
+app.get("/secrets", function(req, res) {
+  if (req.isAuthenticated()) {
     res.render("secrets");
   } else {
     res.redirect("/login");
   }
 });
 
-app.get("/logout", function(req, res){
+app.get("/logout", function(req, res) {
   req.logout();
   res.redirect("/");
 });
 
 app.post("/register", function(req, res) {
-  User.register({username: req.body.username}, req.body.password, function(err, user){
-    if (err){
+  User.register({
+    username: req.body.username
+  }, req.body.password, function(err, user) {
+    if (err) {
       console.log(err);
       res.redirect("/register");
     } else {
-      passport.authenticate("local")(req, res, function(){
+      passport.authenticate("local")(req, res, function() {
         res.redirect("/secrets");
       });
     }
@@ -89,12 +91,12 @@ app.post("/login", function(req, res) {
     password: req.body.passport
   });
 
-  req.login(user, function(err){
-    if (err){
+  req.login(user, function(err) {
+    if (err) {
       console.log(err);
     } else {
-        passport.authenticate("local")(req, res, function(){
-          res.redirect("/secrets");
+      passport.authenticate("local")(req, res, function() {
+        res.redirect("/secrets");
       });
     }
   });
